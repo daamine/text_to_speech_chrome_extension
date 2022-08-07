@@ -1,0 +1,20 @@
+{
+  "name": "Article to speech reader",
+  "author": "Amine Daoud",
+  "description": "This extension allows to read a selected text area in a website",
+  "version": "1.0",
+  "manifest_version": 3,
+  
+  "permissions": ["tts"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "128": "micro.png"
+  },
+  "background": {"service_worker": "background.js"},
+  "action": {}
+}
