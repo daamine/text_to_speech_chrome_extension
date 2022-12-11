@@ -9,12 +9,17 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.text === 'onCLicked') {
-        console.log("Message received !");
-        chrome.runtime.sendMessage({ data: window.getSelection().toString().replace(/[\r\n]/gm, ' ') }, function (response) {
+chrome.runtime.onMessage.addListener(function(request)  {
+    if (request.action === 'start') {
+        console.log("start Message received ! " + request.language);
+        chrome.runtime.sendMessage({ data: window.getSelection().toString().replace(/[\r\n]/gm, ' ') , action: "start", language: request.language}, function (response) {
+            console.log(response);
+        });
+    } else if (request.action === 'stop') {
+        console.log("Stop Message received !");
+        chrome.runtime.sendMessage({action: "stop"}, function (response) {
             console.log(response);
         });
     }
-    sendResponse();
+    //sendResponse();
 });

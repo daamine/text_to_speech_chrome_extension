@@ -9,20 +9,29 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+import {LANGUAGE_REGION_MAP} from './constants.js';    
+
 console.log("background Script file")
+
 
 chrome.runtime.onMessage.addListener( function (request, sender, sendResponse) {
   console.log("Got message from content Script: ", request);
-  var sentences = request['data'].split(".");
-  for (var i=0;i< sentences.length;i++)
-  {
-    sentenceWithDot = sentences[i]+ ". ";
-    console.log(sentenceWithDot);
-    if (sentences[i].trim()){
-      chrome.tts.speak(sentenceWithDot, {'lang': 'en-GB', 'gender': 'female', 'enqueue': true});
-    } 
-  }
-  
+  if (request['action'] === "start") { 
+    console.log(request['language'])
+    console.log(LANGUAGE_REGION_MAP[request['language']])
+    var sentences = request['data'].split(".");
+    for (var i=0;i< sentences.length;i++)
+    {
+      var sentenceWithDot = sentences[i]+ ". ";
+      console.log(sentenceWithDot);
+      if (sentences[i].trim()){
+        chrome.tts.speak(sentenceWithDot, {'lang': LANGUAGE_REGION_MAP[request['language']]
+        , 'gender': 'female', 'enqueue': true});
+      } 
+    }
+  } else if (request['action'] === "stop") {
+    chrome.tts.stop();
+  } 
   sendResponse('OK');
 })
 
